@@ -15,17 +15,21 @@ def get_fool_file_name():
     fool_file_name = pathlib.Path(p,phone_book_file_name)
     return fool_file_name
 
-def load_from_file(phone_list_name_file,):
-    with open(phone_list_name_file, 'r', encoding='UTF-8') as phone_list_file:
-        phone_lines = phone_list_file.read()
-        # print(phone_lines)
-        phone_book_list = phone_lines.splitlines()
-        for i in phone_book_list:
-            if len(i.strip())==0:
-                phone_book_list.remove(i)
-                global flag_of_change
-                flag_of_change = True
-        return phone_book_list
+def load_from_file(phone_list_name_file):
+    if os.path.isfile(phone_list_name_file):
+        with open(phone_list_name_file, 'r', encoding='UTF-8') as phone_list_file:
+            phone_lines = phone_list_file.read()
+         # print(phone_lines)
+            phone_book_list = phone_lines.splitlines()
+            for i in phone_book_list:
+                if len(i.strip())==0:
+                    phone_book_list.remove(i)
+                    global flag_of_change
+                    flag_of_change = True
+    else:
+        with open(phone_list_name_file, 'w', encoding='UTF-8') as phone_list_file:
+            phone_list_file.write('')
+    return phone_book_list
 
 def save_to_file(phone_list_name_file):
     if flag_of_change:
@@ -222,17 +226,20 @@ def contact_for_print(string_contact):
     if len(fio_n)==4:
         fio_n[3] = create_phone_number(fio_n[3])
     return ' '.join(fio_n)
-
+ф
 def print_contacts(show_index = False):
     print("="*60)
-    if show_index:
-        j = 0
-        for i in phone_book_list:
-            print(str(j)+" ",contact_for_print(i))
-            j += 1
+    if len(phone_book_list)>0:
+        if show_index:
+            j = 0
+            for i in phone_book_list:
+                print(str(j)+" ",contact_for_print(i))
+                j += 1
+        else:
+            for i in phone_book_list:
+                print(i)
     else:
-        for i in phone_book_list:
-            print(i)
+        print("НЕТ ДАННЫХ")    
     print("="*60)
     
 
